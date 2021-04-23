@@ -23,7 +23,7 @@ def day_1(L):
 	print("pas de nb")
 
 day1=day_1(b)
-print("Solution for the first part : ",day1)
+print("Solution for the first part : ",day1) #786811
 
 #fucntion to answer to the second part
 def day_1_v2(L):
@@ -40,4 +40,4 @@ def day_1_v2(L):
 
 
 d = day_1_v2(b)
-print("Solution for the second part :  ", d)
+print("Solution for the second part :  ", d) #199068980
