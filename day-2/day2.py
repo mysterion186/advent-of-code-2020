@@ -1,98 +1,65 @@
 f = open("day2.txt")
 lines = f.readlines()
+f.close()
 
+#will return a list containing all the password policy info
+def get_password_info(password):
+	password_info = [] #will contain the lowest,highest and the charactere that respect the company policy
+	n_low = password[0:password.index("-")]
+	n_high = password[password.index("-")+1:password.index(" ")] #index return the first index that match the value
+	char = password[password.index(' ')+1:password.index(":")]
+	return [n_low,n_high,char]
 
-# get the highest and lowest time a letter occur and the letter
-def get_infos(L):
-	i_prev = 0
-	n1 = 0
-	n2 = 0
-	ni = 0
-	char =""
-	for k in range (len(L)):
-		for i in range (len(L[k])):
-			if L[k][i] == "-":
-				n1 = L[k][i_prev:i]
-				i_prev = i+1
-			elif L[k][i] == " ":
-				n2 =  L[k][i_prev:i-3]
+#print(test[test.index(" ",test.index(":"))+1:])
 
-				#char = L[k][i-1]
-			elif L[k][i] == ":" :
-				char = L[k][i-1]
-				ni = i
+#check if a given password verify the company policy
+def count_char(password):
+	count = 0
+	values = get_password_info(password)
+	for char in password[password.index(" ",password.index(":"))+1:]:
+		if char == values[2]:
+			count+=1
+	if count <= int(values[1]) and count >= int(values[0]):
+		return True
+	return False
 
-	return [n1,n2,char,ni]
-
-
-
-def compte(L):
-	
-	#print(info)
-	compte_final = 0
-	
-	for k in range (len(L)):
-		info = get_infos([L[k]]) #contient le nb mini, max et la lettre qu'on veut dans le mdp
-		#print(info)
-		compte = 0
-		new_list = L[k][info[3]+2:]
-		#print(new_list)
-		for char in L[k][info[3]+2:]:
-
-			if char == info[2]:
-				compte = compte+1
-				#print(compte)
-		if int(info[0])<=compte<=int(info[1]):
-			compte_final= compte_final +1
-	return ("nb de mdp qui respect = {} ".format(compte_final))
-
-
-print(compte(lines))
-
-
-def check_password(L):
-	compte_final = 0
-	invalide = 0
-	for k in range (len(L)):
-		info = get_infos([L[k]]) #contient le nb mini, max et la lettre qu'on veut dans le mdp
-		#print(info)
-		compte = 0
-		new_list = L[k][info[3]+2:]
-		#print(new_list)
-		if new_list[(int(info[0])-1)] == info[2] and new_list[(int(info[1])-1)] == info[2] :
-			invalide+=1
-
+def day_2(password_list,v):
+	count = 0
+	for raw_password in password_list:
+		password = raw_password.split('\n')[0]
+		if v == 1 :
+			if count_char(password):
+				count +=1
 		else :
+			if count_char_v2(password):
+				count +=1
+	return count
 
-			if new_list[(int(info[0])-1)] == info[2] :
-				compte_final+=1
-			elif new_list[(int(info[1])-1)] == info[2] :
-				compte_final+=1
+print("Solution part 1 day 2 : ",day_2(lines,1)) #620
 
-	return ("nb de mdp qui respect la nouvelle convention : {}\nle nb de mot de passe invalide est  : {}".format(compte_final,invalide))
-
-
-
-print("*"*50)
-print(check_password(lines))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#check the new company policy
+def count_char_v2(password):
+	values = get_password_info(password)
+	#get the password 
+	clean_password = password[password.index(" ",password.index(":"))+1:]
+	#use variable to have a more readable code
+	n_low = int(values[0])-1
+	n_high = int(values[1])-1
+	#check that the the characteres are different 
+	if clean_password[n_low] == clean_password[n_high]:
+		return False 
+	#check if of the number respect the criteria
+	else :
+		if clean_password[n_low] == values[2]:
+			return True 
+		elif clean_password[n_high]==values[2]:
+			return True 
+	return False 
 
 
+print("Solution part 2 day 2 : ",day_2(lines,2)) #727
 
-
-
-
-
+test = "17-19 p: pwpzpfbrcaaaaaaaaaaa"
+# count_char_v2(test)
+#test = "1-3 b: cdefg"
+print(count_char_v2(test))
