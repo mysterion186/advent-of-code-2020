@@ -141,4 +141,4 @@ def validator(passport,field):
 	return False 
 
 
-print("Solution for the part 2 : ",day_4(get_clean_passport(raw_passport),v= False)) #213
+print("Solution for the part 2 : ",day_4(get_clean_passport(raw_passport),v= False)) #147
