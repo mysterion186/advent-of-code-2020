@@ -31,6 +31,7 @@ def check_field(passport,field):
 	return False
 
 #function to test if all the field
+#v = True == part one and v = False == part two
 def day_4 (clean_passport,v = True ):
 	field_list = ["byr","iyr","eyr","hgt","hcl","ecl","pid"]
 	count = 0
@@ -39,7 +40,11 @@ def day_4 (clean_passport,v = True ):
 		#check all the field in the passport
 		for field in field_list :
 			if check_field (passport,field):
-				field_count+=1 #get the number of present fields in the passport
+				if not v :
+					if validator(passport,field):
+						 field_count+=1
+				else :
+					field_count+=1 #get the number of present fields in the passport
 		#if field_count == 7 means that all the fiels are in the passport
 		if field_count == 7 :
 			count+=1
@@ -80,11 +85,12 @@ def valid_eyr(passport):
 #check if hgt is valid
 def valid_hgt(passport):
 	value = get_field_value(passport,"hgt")
-	height = int(value[0:-2])
 	if value[-2:] =="in":
+		height = int(value[0:-2])
 		if height >= 59 and height <= 76 :
 			return True
 	elif value[-2:] == "cm":
+		height = int(value[0:-2])
 		if height >=150 and height <= 193:
 			return True
 	return False
@@ -133,11 +139,6 @@ def validator(passport,field):
 	elif field =="pid":
 		return valid_pid(passport)
 	return False 
-#print(get_clean_passport(raw_passport)[0:5])
-test = "hcl:#123abe hgt:183cm cid:135 byr:1992 eyr:2024 iyr:2013 pid:138000309 ecl:brn "
-"""print(valid_pid(test))
-print(validator(test,"byr"))"""
 
-field_list = ["byr","iyr","eyr","hgt","hcl","ecl","pid"]
-for field in field_list:
-	print(validator(test,field))
+
+print("Solution for the part 2 : ",day_4(get_clean_passport(raw_passport),v= False)) #213
